@@ -43,25 +43,22 @@ namespace AgeCalculator
         {
             // Calculate how old the user is 
             DateTime currentTime = DateTime.Now;
-            var ageYears = Math.Floor((currentTime.Subtract(dob).TotalDays) / 365.25);
-            var ageMonths = Math.Floor((currentTime.Subtract(dob).TotalDays)%365.25/30);
-            var ageWeeks = Math.Floor((currentTime.Subtract(dob).TotalDays)%365.25%30/7);
-            var ageDays = Math.Floor((currentTime.Subtract(dob).TotalDays) % 365.25 % 30 % 7);
-            var ageHours = Math.Floor((currentTime.Subtract(dob).TotalDays) % 365.25 % 30 % 7 / 24);
-            //var ageMinutes
-            //var ageSeconds
-            //var ageMilliSeconds
-            
 
+            var age = currentTime - dob;
+            var ageSeconds = age.TotalSeconds;
+            var years = Math.Floor(ageSeconds / 31557600);
+            var weeks = Math.Floor( (ageSeconds % 31557600) / 604800);
+            var days = Math.Floor(((ageSeconds % 31557600) % 604800) / 86400);
+            var hours = Math.Floor((((ageSeconds % 31557600) % 604800) % 86400/3600));
+            var minutes = Math.Floor(((((ageSeconds % 31557600) % 604800) % 86400) % 3600) / 60);
+            var seconds = Math.Floor(((((ageSeconds % 31557600) % 604800) % 86400) % 3600) % 60);
+            var milliseconds = Math.Floor(((((ageSeconds % 31557600) % 604800) % 86400) % 3600) % 60 * 100);
             // Tell user how old they are using different times 
             Console.Clear();
-            Console.WriteLine("You are " + ageYears + " years, " + ageMonths + " months, " + ageWeeks + " weeks, " + ageDays +
-                " days old.");
 
-            /*Commented out because didn't do math right initially and will have to fix
             
-            + ageHours + " hours, " + ageMinutes + " minutes, " + ageSeconds + 
-            " seconds, and " + ageMilliSeconds + " milliseconds old.");*/
+            Console.WriteLine("You are " + years + " years, " + weeks + " weeks, " + days + " days, " + hours + 
+                " hours, " + minutes + " minutes, " + seconds + " seconds, and " + milliseconds + " milliseconds old." );
             Console.WriteLine("Press the enter key to exit the program at any time");
         }
     }
