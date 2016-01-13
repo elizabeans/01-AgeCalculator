@@ -10,7 +10,12 @@ namespace AgeCalculator
     {
         private static System.Timers.Timer aTimer;
         private static DateTime dob;
-        private static double daysInYear = 365.25;
+        private static int yearInSeconds = 31557600;
+        private static int weeksInSeconds = 604800;
+        private static int daysInSeconds = 86400;
+        private static int hoursInSeconds = 3600;
+        private static int minutesInSeconds = 60;
+        private static int secToMilliSec = 100;
 
 
         static void Main(string[] args)
@@ -42,21 +47,20 @@ namespace AgeCalculator
         private static void OnTimedEvent(Object source, System.Timers.ElapsedEventArgs e)
         {
             // Calculate how old the user is 
-            DateTime currentTime = DateTime.Now;
 
+            DateTime currentTime = DateTime.Now;
             var age = currentTime - dob;
             var ageSeconds = age.TotalSeconds;
-            var years = Math.Floor(ageSeconds / 31557600);
-            var weeks = Math.Floor( (ageSeconds % 31557600) / 604800);
-            var days = Math.Floor(((ageSeconds % 31557600) % 604800) / 86400);
-            var hours = Math.Floor((((ageSeconds % 31557600) % 604800) % 86400/3600));
-            var minutes = Math.Floor(((((ageSeconds % 31557600) % 604800) % 86400) % 3600) / 60);
-            var seconds = Math.Floor(((((ageSeconds % 31557600) % 604800) % 86400) % 3600) % 60);
-            var milliseconds = Math.Floor(((((ageSeconds % 31557600) % 604800) % 86400) % 3600) % 60 * 100);
+            var years = Math.Floor(ageSeconds / yearInSeconds);
+            var weeks = Math.Floor( (ageSeconds % yearInSeconds) / weeksInSeconds);
+            var days = Math.Floor(((ageSeconds % yearInSeconds) % weeksInSeconds) / daysInSeconds);
+            var hours = Math.Floor((((ageSeconds % yearInSeconds) % weeksInSeconds) % daysInSeconds / hoursInSeconds));
+            var minutes = Math.Floor(((((ageSeconds % yearInSeconds) % weeksInSeconds) % daysInSeconds) % hoursInSeconds) / minutesInSeconds);
+            var seconds = Math.Floor(((((ageSeconds % yearInSeconds) % weeksInSeconds) % daysInSeconds) % hoursInSeconds) % minutesInSeconds);
+            var milliseconds = Math.Floor(((((ageSeconds % yearInSeconds) % weeksInSeconds) % daysInSeconds) % hoursInSeconds) % minutesInSeconds * secToMilliSec);
+
             // Tell user how old they are using different times 
             Console.Clear();
-
-            
             Console.WriteLine("You are " + years + " years, " + weeks + " weeks, " + days + " days, " + hours + 
                 " hours, " + minutes + " minutes, " + seconds + " seconds, and " + milliseconds + " milliseconds old." );
             Console.WriteLine("Press the enter key to exit the program at any time");
